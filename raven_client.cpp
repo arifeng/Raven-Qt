@@ -23,7 +23,7 @@ char kRequestIdProperty[] = "RequestIdProperty";
 }
 
 const char Raven::kClientName[] = "Raven-Qt";
-const char Raven::kClientVersion[] = "0.2";
+const char Raven::kClientVersion[] = "0.2.1";
 
 Raven* g_client;
 
@@ -128,8 +128,8 @@ void Raven::captureMessage(
     }
 
     QJsonObject jdata;
-    jdata["event_id"] = QUuid::createUuid().toString();
-    jdata["timestamp"] = QDateTime::currentDateTime().toString(Qt::ISODate);
+    jdata["event_id"] = QString(QUuid::createUuid().toRfc4122().toHex());
+    jdata["timestamp"] = QDateTime::currentDateTimeUtc().toString(Qt::ISODate);
     jdata["server_name"] = QHostInfo::localHostName();
     jdata["user"] = instance->GetUserInfo();
     jdata["level"] = GetLevelString(level);
